@@ -6,9 +6,8 @@ name: this-repo-build-push-to-dockerhub
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    tags: 
+    -  '**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -24,6 +23,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - name: Set env
+        run: echo "GITHUB_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -42,8 +43,5 @@ jobs:
       # Build and push the image to Container Registry
       - name: Build and Push container to registry
         run: |
-          docker build --file=Dockerfile -t ${{ secrets.DOCKER_HUB_USERNAME }}/dotnetcore-webapi:latest .
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/dotnetcore-webapi:latest
-
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+          docker build --file=Dockerfile -t ${{ secrets.DOCKER_HUB_USERNAME }}/dotnetcore-webapi:${{ env.GITHUB_TAG }} .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/dotnetcore-webapi:${{ env.GITHUB_TAG }}cced conf to trgi
