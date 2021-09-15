@@ -44,4 +44,4 @@ jobs:
       - name: Build and Push container to registry
         run: |
           docker build --file=Dockerfile -t ${{ secrets.DOCKER_HUB_USERNAME }}/dotnetcore-webapi:${{ env.GITHUB_TAG }} .
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/dotnetcore-webapi:${{ env.GITHUB_TAG }}cced conf to trgi
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/dotnetcore-webapi:${{ env.GITHUB_TAG }}
